@@ -11,7 +11,6 @@ import { useState  } from "react";
 import { api } from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import { ButtonText } from "../../components/ButtonText";
-import { useAuth } from "../../hooks/auth";
 
 export function New(){
     const [title , setTitle] = useState("")
@@ -24,7 +23,6 @@ export function New(){
     const [newTag , setNewTag] = useState("")
 
     const navigate = useNavigate();
-    const {sendNewNOte} = useAuth()
 
     function handleAddLink(){
         setLinks(prevState => [...prevState , newLink])
@@ -61,8 +59,9 @@ export function New(){
         }
 
 
-        await sendNewNOte(title , description , links , tags
-        );
+        await api.post("/notes" , {
+            title , description , links , tags
+        });
 
         alert("Nota criada com sucesso")
         navigate(-1)
@@ -133,7 +132,7 @@ export function New(){
                                 />
                         </div>
                     </Section>
-                    <Button title="Salvar" onPress={handleNewNote}/>
+                    <Button title="Salvar" onClick={handleNewNote}/>
                     
                 </Form>
                 
